@@ -23,6 +23,54 @@ struct ShowDetailView: View {
                 LabeledContent("Event Number", value: show.eventNumber)
                 LabeledContent("Ring Number", value: String(show.ringNumber))
             }
+            Section("Financial Summary") {
+                Group {
+                    // Judging Fee Section
+                    if show.compensationType == .flatFee {
+                        LabeledContent("Judging Fee (Flat)", value: show.flatFeeAmount ?? 0, format: .currency(code: "USD"))
+                    } else {
+                        LabeledContent("Per Dog Rate", value: show.perDogRate ?? 0, format: .currency(code: "USD"))
+                        LabeledContent("Total Dogs", value: "\(show.totalDogs)")
+                        LabeledContent("Judging Fee", value: show.judgingFee, format: .currency(code: "USD"))
+                            .fontWeight(.semibold)
+                    }
+                }
+                
+                Divider()
+                
+                // Travel Expenses Section
+                Group {
+                    if (show.mileageTraveled ?? 0) > 0 {
+                        LabeledContent("Mileage Rate", value: show.mileageRate ?? 0, format: .currency(code: "USD"))
+                        LabeledContent("Miles Traveled", value: "\(Int(show.mileageTraveled ?? 0))")
+                        LabeledContent("Mileage Expense", value: (show.mileageRate ?? 0) * (show.mileageTraveled ?? 0), format: .currency(code: "USD"))
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    if (show.hotelExpense ?? 0) > 0 {
+                        LabeledContent("Hotel", value: show.hotelExpense ?? 0, format: .currency(code: "USD"))
+                            .foregroundColor(.secondary)
+                    }
+                    if (show.airfareExpense ?? 0) > 0 {
+                        LabeledContent("Airfare", value: show.airfareExpense ?? 0, format: .currency(code: "USD"))
+                            .foregroundColor(.secondary)
+                    }
+                    if (show.otherExpenses ?? 0) > 0 {
+                        LabeledContent("Other Expenses", value: show.otherExpenses ?? 0, format: .currency(code: "USD"))
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    LabeledContent("Total Expenses", value: show.totalTravelExpenses, format: .currency(code: "USD"))
+                        .fontWeight(.semibold)
+                }
+                
+                Divider()
+                
+                // Total Compensation
+                LabeledContent("Total Compensation", value: show.totalCompensation, format: .currency(code: "USD"))
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
+            }
             
             Section("Location") {
                 ShowMapView(show: show)

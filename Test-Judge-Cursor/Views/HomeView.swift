@@ -74,26 +74,6 @@ struct HomeView: View {
                         .padding(.horizontal)
                     }
                     
-                    // Quick Actions
-                    HStack(spacing: 20) {
-                        QuickActionButton(
-                            title: "Add Show",
-                            systemImage: "plus.circle.fill",
-                            color: .blue
-                        ) {
-                            showingAddShow = true
-                        }
-                        
-                        QuickActionButton(
-                            title: "Scan Contract",
-                            systemImage: "doc.viewfinder",
-                            color: .green
-                        ) {
-                            showingScannerSheet = true
-                        }
-                    }
-                    .padding(.horizontal)
-                    
                     // Upcoming Shows
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Upcoming Shows")
@@ -113,9 +93,30 @@ struct HomeView: View {
                                     }
                                 }
                                 .padding(.horizontal)
+                                .padding(.vertical, 5)
                             }
                         }
                     }
+                    
+                    // Quick Actions
+                    HStack(spacing: 20) {
+                        QuickActionButton(
+                            title: "Add Show",
+                            systemImage: "plus.circle.fill",
+                            color: .blue
+                        ) {
+                            showingAddShow = true
+                        }
+                        
+                        QuickActionButton(
+                            title: "Scan Contract",
+                            systemImage: "doc.viewfinder",
+                            color: .green
+                        ) {
+                            showingScannerSheet = true
+                        }
+                    }
+                    .padding(.horizontal)
                     
                     // Statistics
                     VStack(alignment: .leading, spacing: 15) {
@@ -144,7 +145,7 @@ struct HomeView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("Judge Assistant")
+            .navigationTitle("iJudge")
             .task {
                 await fetchCurrentWeather()
             }
@@ -250,7 +251,7 @@ struct UpcomingShowCard: View {
                     .cornerRadius(4)
             }
             .padding()
-            .frame(width: 200)
+            .frame(width: 200, height: 150)
             .background(Color(.systemBackground))
             .cornerRadius(12)
             .shadow(radius: 2)

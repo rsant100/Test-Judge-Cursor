@@ -35,6 +35,7 @@ struct ContentView: View {
                     Label("Settings", systemImage: "gear")
                 }
         }
+        .tint(.blue)
     }
 }
 
