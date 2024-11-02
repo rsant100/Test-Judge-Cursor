@@ -269,8 +269,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Test-Judge-Cursor/Info.plist";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We need calendar access to add your shows to your calendar";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan documents";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need location access to show and get directions to dog shows";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Required to get weather forecast for show location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need location access to show and get directions to dog shows";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need photo library access to save scanned documents";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -303,8 +304,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Test-Judge-Cursor/Info.plist";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We need calendar access to add your shows to your calendar";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan documents";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need location access to show and get directions to dog shows";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Required to get weather forecast for show location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need location access to show and get directions to dog shows";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need photo library access to save scanned documents";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

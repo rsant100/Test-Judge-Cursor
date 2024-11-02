@@ -1,23 +1,28 @@
 import Foundation
-import SwiftData
 
-@Model
-final class BreedAssignment {
-    var id: UUID
-    var breedName: String
-    var count: Int
-    var time: Date
-    var ring: Int
-    var notes: String?
-    var show: Show?
+struct AKCBreed: Codable, Identifiable {
+    var id: UUID = UUID()
+    let name: String
+    let group: String
+    let generalAppearance: String?
+    let size: String?
+    let proportion: String?
+    let gait: String?
+    let temperament: String?
+    let judgingTips: String?
+    let commonIssues: String?
     
-    init(breedName: String, count: Int, time: Date, ring: Int, notes: String? = nil, show: Show? = nil) {
-        self.id = UUID()
-        self.breedName = breedName
-        self.count = count
-        self.time = time
-        self.ring = ring
-        self.notes = notes
-        self.show = show
-    }
+    // Optional fields for user data
+    var notes: String?
+    var lastJudged: Date?
+    var totalJudged: Int?
+    var averageEntries: Double?
+}
+
+struct BreedGroup: Identifiable {
+    let id = UUID()
+    let name: String
+    let description: String
+    let breeds: [AKCBreed]
+    let judgingEmphasis: String
 } 

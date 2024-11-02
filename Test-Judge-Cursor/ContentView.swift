@@ -20,6 +20,11 @@ struct ContentView: View {
                     Label("Shows", systemImage: "calendar")
                 }
             
+            BreedsView()
+                .tabItem {
+                    Label("Breeds", systemImage: "pawprint.fill")
+                }
+            
             ContractsView()
                 .tabItem {
                     Label("Contracts", systemImage: "doc.text.fill")

@@ -53,6 +53,28 @@ struct ShowDetailView: View {
                 ))
                 .frame(minHeight: 100)
             }
+            
+            Section("Weather") {
+                WeatherView(show: show)
+            }
+            
+            Section("Calendar") {
+                HStack {
+                    Text("Add to Calendar")
+                    Spacer()
+                    Button(action: {
+                        Task {
+                            let success = await CalendarManager.shared.addShowToCalendar(show)
+                            if success {
+                                // Show success message
+                            }
+                        }
+                    }) {
+                        Image(systemName: "calendar.badge.plus")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
         }
         .navigationTitle("Show Details")
         .toolbar {

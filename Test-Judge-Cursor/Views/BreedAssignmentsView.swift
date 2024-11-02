@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct BreedAssignmentsView: View {
+    @Environment(\.modelContext) private var modelContext
     @Bindable var show: Show
     @State private var showingAddBreed = false
     @State private var selectedBreed: BreedAssignment?
@@ -15,15 +16,21 @@ struct BreedAssignmentsView: View {
                     }
             }
             .onDelete(perform: deleteBreeds)
-        }
-        .navigationTitle("Breed Assignments")
-        .toolbar {
+            
             Button(action: { showingAddBreed = true }) {
-                Image(systemName: "plus")
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Add Breed")
+                }
             }
         }
+        .navigationTitle("Breed Assignments")
         .sheet(isPresented: $showingAddBreed) {
-            AddBreedAssignmentView(show: show)
+            AddBreedAssignmentView { breed in
+                breed.show = show
+                show.breedAssignments.append(breed)
+                modelContext.insert(breed)
+            }
         }
         .sheet(item: $selectedBreed) { breed in
             EditBreedAssignmentView(breed: breed)
@@ -34,6 +41,7 @@ struct BreedAssignmentsView: View {
         for index in offsets {
             let breed = show.breedAssignments.sorted(by: { $0.time < $1.time })[index]
             show.breedAssignments.removeAll { $0.id == breed.id }
+            modelContext.delete(breed)
         }
     }
 }
@@ -64,4 +72,13 @@ struct BreedAssignmentRow: View {
         }
         .padding(.vertical, 4)
     }
+}
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Show.self, BreedAssignment.self, configurations: config)
+    let show = Show(name: "Test Show", date: Date(), location: "Test City", state: "TS", eventNumber: "123", ringNumber: 1)
+    
+    return BreedAssignmentsView(show: show)
+        .modelContainer(container)
 } 

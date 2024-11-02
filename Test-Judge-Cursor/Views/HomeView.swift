@@ -7,15 +7,73 @@ struct HomeView: View {
     @State private var showingScannerSheet = false
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Show.date) private var shows: [Show]
+    @State private var currentWeather: WeatherForecast?
+    @State private var weatherLocation: String = ""
     
     var upcomingShows: [Show] {
-        shows.filter { $0.date > Date() }
+        let today = Calendar.current.startOfDay(for: Date())
+        return shows.filter { show in
+            let showDate = Calendar.current.startOfDay(for: show.date)
+            return showDate >= today
+        }
+        .sorted { $0.date < $1.date }
     }
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
+                    // Current Weather Card
+                    if let weather = currentWeather {
+                        VStack {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("Current Weather")
+                                        .font(.headline)
+                                    Text(weatherLocation)
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                                
+                                Spacer()
+                                
+                                if let url = weather.weather.first?.iconURL {
+                                    AsyncImage(url: url) { image in
+                                        image
+                                            .resizable()
+                                            .frame(width: 50, height: 50)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                }
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("\(Int(weather.main.temp))°F")
+                                        .font(.title2)
+                                    Text(weather.weather.first?.description.capitalized ?? "")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            
+                            Divider()
+                                .padding(.vertical, 8)
+                            
+                            HStack {
+                                WeatherDetailView(title: "High", value: "\(Int(weather.main.temp_max))°")
+                                Divider()
+                                WeatherDetailView(title: "Low", value: "\(Int(weather.main.temp_min))°")
+                                Divider()
+                                WeatherDetailView(title: "Humidity", value: "\(weather.main.humidity)%")
+                            }
+                        }
+                        .padding()
+                        .background(Color(.systemBackground))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                        .padding(.horizontal)
+                    }
+                    
                     // Quick Actions
                     HStack(spacing: 20) {
                         QuickActionButton(
@@ -50,7 +108,7 @@ struct HomeView: View {
                         } else {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
-                                    ForEach(upcomingShows.prefix(5)) { show in
+                                    ForEach(upcomingShows) { show in
                                         UpcomingShowCard(show: show)
                                     }
                                 }
@@ -87,6 +145,9 @@ struct HomeView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Judge Assistant")
+            .task {
+                await fetchCurrentWeather()
+            }
         }
         .sheet(isPresented: $showingAddShow) {
             AddShowView()
@@ -126,6 +187,17 @@ struct HomeView: View {
             try modelContext.save()
         } catch {
             print("Error saving contract: \(error.localizedDescription)")
+        }
+    }
+    
+    private func fetchCurrentWeather() async {
+        if let nextShow = upcomingShows.first {
+            do {
+                currentWeather = try await WeatherService.shared.fetchWeatherForecast(for: nextShow)
+                weatherLocation = "\(nextShow.location), \(nextShow.state)"
+            } catch {
+                print("Error fetching weather: \(error.localizedDescription)")
+            }
         }
     }
 }
