@@ -4,9 +4,12 @@
 <dict>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>We need to send you notifications about upcoming shows</string>
-	<key>UIBackgroundModes</key>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>remote-notification</string>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>location</string>
 	</array>
 </dict>
 </plist>

@@ -145,7 +145,7 @@ struct HomeView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("iJudge")
+            .navigationTitle("iJudges")
             .task {
                 await fetchCurrentWeather()
             }
